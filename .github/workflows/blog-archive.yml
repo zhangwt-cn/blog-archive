@@ -1,10 +1,6 @@
 name: blog-archive
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
   workflow_dispatch:
 
 env:
@@ -19,14 +15,14 @@ jobs:
     - uses: actions/checkout@v3
     - name: run
       env:
-        API_GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
-        OWNER: ${{ secrets.OWNER }}
-        REPO: ${{ secrets.REPO }}
+        API_GITHUB_TOKEN: ${{ inputs.api-github-token }}
+        OWNER: ${{ inputs.owner }}
+        REPO: ${{ inputs.repo }}
       run: cargo run
     - name: commit
       run: |
-        sudo git config user.email ${{ secrets.COMMIT_EMAIL }}
-        sudo git config user.name ${{ secrets.COMMIT_USER_NAME }}
+        sudo git config user.email ${{ inputs.git-user-email }}
+        sudo git config user.name ${{ inputs.git-user-name }}
         git config user.email
         git config user.name
         git pull
