@@ -38,6 +38,7 @@ pub async fn req_api(req: GithubApiReq) -> Result<(), Error> {
 
 // handle issues
 fn handle_issues(issues_list: Vec<IssuesResponse>) {
+    println!("issues count: {}", issues_list.len());
     let mut text = String::new();
     text.push_str("# Summary\n\n");
     for issue in issues_list {
