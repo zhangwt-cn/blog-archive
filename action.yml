@@ -34,8 +34,3 @@ runs:
   using: 'rust'
   main: 'main.rs'
 
-  
-
-runs:
-  using: 'node12'
-  main: 'index.js'
