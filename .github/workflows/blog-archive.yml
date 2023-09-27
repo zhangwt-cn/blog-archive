@@ -1,4 +1,4 @@
-name: Rust
+name: blog-archive
 
 on:
   push:
@@ -23,9 +23,5 @@ jobs:
         OWNER: ${{ secrets.OWNER }}
         REPO: ${{ secrets.REPO }}
       run: cargo run
-    - name: update readme
-      run: | 
-        cat README.md
-        ls
       
   
