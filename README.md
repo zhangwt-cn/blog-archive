@@ -13,5 +13,6 @@
 - [MySQL迁移DM数据库](https://github.com/zhangwt-cn/notes/issues/6) - 2023-08-29T09:38:11Z
 - [Ubuntu 安装firefox报错](https://github.com/zhangwt-cn/notes/issues/5) - 2023-08-03T09:53:32Z
 - [软考备考](https://github.com/zhangwt-cn/notes/issues/4) - 2023-07-19T07:28:11Z
+- [高性能 MySQL](https://github.com/zhangwt-cn/notes/issues/1) - 2023-02-02T07:02:23Z
 - [深入理解 Java 虚拟机](https://github.com/zhangwt-cn/notes/issues/2) - 2023-02-02T01:48:22Z
 - [书单 & 学习方向](https://github.com/zhangwt-cn/notes/issues/3) - 2023-02-02T01:39:55Z
