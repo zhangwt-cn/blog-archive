@@ -40,7 +40,7 @@ fn handle_issues(issues_list: Vec<IssuesResponse>) {
     let mut text = String::new();
     for issue in issues_list {
         text.push_str(
-            format!("[{}]({}) - {}\n", issue.title, issue.url, issue.created_at).as_str(),
+            format!("<p align=\"left\">[{}]({}) - {}</p>", issue.title, issue.url, issue.created_at).as_str(),
         );
     }
     update_readme(text);
