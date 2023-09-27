@@ -8,12 +8,13 @@ use std::fs;
 #[tokio::main]
 pub async fn req_api(req: GithubApiReq) -> Result<(), Error> {
     let url = format!(
-        "https://api.github.com/repos/{}/{}/issues?state=all&page=1&per_page=100",
+        "https://api.github.com/repos/{}/{}/issues",
         req.owner, req.repo
     );
 
     let resp = reqwest::Client::new()
         .get(&url)
+        .query(&[("state", "all"), ("page", "1"), ("per_page", "100")])
         .header("User-Agent", "blog-archive")
         .header("Accept", "application/vnd.github+json")
         .header("X-GitHub-Api-Version", "2022-11-28")
