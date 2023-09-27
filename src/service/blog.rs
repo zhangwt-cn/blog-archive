@@ -1,29 +1,37 @@
 use crate::models::api_req::GithubApiReq;
 use crate::models::api_resp::IssuesResponse;
-use reqwest::Error;
-use reqwest::StatusCode;
+use hyper::Client;
+use hyper::{Body, Error, Method, Request, StatusCode};
 use std::fs;
 
 // 请求github api
 #[tokio::main]
 pub async fn req_api(req: GithubApiReq) -> Result<(), Error> {
     let url = format!(
-        "https://api.github.com/repos/{}/{}/issues",
+        "https://api.github.com/repos/{}/{}/issues?state=all&page=1&per_page=100",
         req.owner, req.repo
     );
 
-    let resp = reqwest::Client::new()
-        .get(&url)
+    let request = Request::builder()
+        .method(Method::GET)
+        .uri(url)
         .header("User-Agent", "blog-archive")
         .header("Accept", "application/vnd.github+json")
         .header("X-GitHub-Api-Version", "2022-11-28")
         .header("Authorization", format!("Bearer {}", req.token))
-        .send()
-        .await?;
+        .body(Body::empty())
+        .unwrap();
 
+    let resp = Client::new().request(request).await?;
     match resp.status() {
         StatusCode::OK => {
-            let issues_list: Vec<IssuesResponse> = resp.json().await?;
+            let body_bytes = hyper::body::to_bytes(resp.into_body()).await?;
+            let body_str = String::from_utf8_lossy(&body_bytes);
+            println!("Response body:\n{}", body_str);
+
+            // 解析 JSON 响应
+            let issues_list: Vec<IssuesResponse> =
+                serde_json::from_str(&body_str).expect("JSON was not well-formatted");
             handle_issues(issues_list)
         }
         StatusCode::UNAUTHORIZED => {
@@ -42,7 +50,13 @@ fn handle_issues(issues_list: Vec<IssuesResponse>) {
     let mut text = String::new();
     text.push_str("# Summary\n\n");
     for issue in issues_list {
-        text.push_str(format!("- [{}]({}) - {}\n", issue.title, issue.html_url, issue.created_at).as_str());
+        text.push_str(
+            format!(
+                "- [{}]({}) - {}\n",
+                issue.title, issue.html_url, issue.created_at
+            )
+            .as_str(),
+        );
     }
     update_readme(text);
 }
