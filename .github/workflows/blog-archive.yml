@@ -28,5 +28,6 @@ jobs:
         ls
         cd .. 
         ls
+        cat README.md
       
   

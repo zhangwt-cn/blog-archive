@@ -52,7 +52,7 @@ fn update_readme(text: String) {
     Command::new("echo")
         .arg(text)
         .arg(">>")
-        .arg("README.md")
+        .arg("../README.md")
         .output()
         .expect("echo failed");
 }
