@@ -38,9 +38,11 @@ pub async fn req_api(req: GithubApiReq) -> Result<(), Error> {
 // handle issues
 fn handle_issues(issues_list: Vec<IssuesResponse>) {
     let mut text = String::new();
+    text.push_str("# Summary\n\n");
     for issue in issues_list {
+        
         text.push_str(
-            format!("<p align=\"left\">[{}]({}) - {}</p>", issue.title, issue.url, issue.created_at).as_str(),
+            format!("- [{}]({}) - {}", issue.title, issue.html_url, issue.created_at).as_str(),
         );
     }
     update_readme(text);
