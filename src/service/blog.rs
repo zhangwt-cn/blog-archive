@@ -2,8 +2,7 @@ use crate::models::api_req::GithubApiReq;
 use crate::models::api_resp::IssuesResponse;
 use reqwest::Error;
 use reqwest::StatusCode;
-use std::fs::File;
-use std::io::Write;
+use std::fs;
 
 // 请求github api
 #[tokio::main]
@@ -50,6 +49,5 @@ fn handle_issues(issues_list: Vec<IssuesResponse>) {
 // update readme.md
 fn update_readme(text: String) {
     // text rewrite to file
-    let mut file = File::open("README.md").expect("create file failed");
-    file.write_all(text.as_bytes()).expect("write file failed");
+    fs::write("README.md", text).expect("Unable to write file");
 }
