@@ -12,10 +12,10 @@ pub async fn req_api(req: GithubApiReq) -> Result<(), Error> {
         "https://api.github.com/repos/{}/{}/issues",
         req.owner, req.repo
     );
-    let params = [("state", "all")];
+    // let params = [("state", "all")];
     let resp = reqwest::Client::new()
         .get(&url)
-        .query(&params)
+        // .query(&params)
         .header("User-Agent", "blog-archive")
         .header("Accept", "application/vnd.github+json")
         .header("X-GitHub-Api-Version", "2022-11-28")
