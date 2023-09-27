@@ -1,9 +1,10 @@
 use crate::models::api_req::GithubApiReq;
 use crate::models::api_resp::IssuesResponse;
+use chrono::prelude::*;
 use hyper::Client;
 use hyper::{Body, Error, Method, Request, StatusCode};
-use std::fs;
 use hyper_tls::HttpsConnector;
+use std::fs;
 
 // 请求github api
 #[tokio::main]
@@ -52,10 +53,14 @@ fn handle_issues(issues_list: Vec<IssuesResponse>) {
     let mut text = String::new();
     text.push_str("# Summary\n\n");
     for issue in issues_list {
+        // 将日期字符串解析为 DateTime<Utc> 类型
+        let parsed_date_time = DateTime::parse_from_rfc3339(&issue.created_at).unwrap();
+        // 格式化日期和时间为字符串
+        let formatted_date_time = parsed_date_time.format("%Y-%m-%d %H:%M:%S").to_string();
         text.push_str(
             format!(
                 "- [{}]({}) - {}\n",
-                issue.title, issue.html_url, issue.created_at
+                issue.title, issue.html_url, formatted_date_time
             )
             .as_str(),
         );
