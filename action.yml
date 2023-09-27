@@ -29,7 +29,10 @@ inputs:
     description: 'update user email'
     required: true
     default: ''
-  
+
+runs:
+  using: 'rust'
+  main: 'main.rs'
 
   
 
