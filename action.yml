@@ -1,0 +1,38 @@
+name: 'blog-archive'
+description: 'issues blog sync README.md Summary'
+branding:
+  icon: 'activity'
+  color: 'white'
+
+inputs:
+  api-github-token:
+    description: 'github api token'
+    required: true
+    default: ''
+    
+  repo:
+    description: 'sync github issues repo name'
+    required: true
+    default: ''
+
+  owner:
+    description: 'sync github issues repo owner'
+    required: true
+    default: ''
+
+  git-user-name:
+    description: 'update user name'
+    required: true
+    default: ''
+
+  git-user-email:
+    description: 'update user email'
+    required: true
+    default: ''
+  
+
+  
+
+runs:
+  using: 'node12'
+  main: 'index.js'
