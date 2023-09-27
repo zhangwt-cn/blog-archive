@@ -1,5 +1,6 @@
 use crate::models::api_req::GithubApiReq;
 use crate::models::api_resp::IssuesResponse;
+use chrono::NaiveDateTime;
 use reqwest::Error;
 use reqwest::StatusCode;
 use std::fs;
@@ -8,7 +9,7 @@ use std::fs;
 #[tokio::main]
 pub async fn req_api(req: GithubApiReq) -> Result<(), Error> {
     let url = format!(
-        "https://api.github.com/repos/{}/{}/issues?staet=all",
+        "https://api.github.com/repos/{}/{}/issues?state=all",
         req.owner, req.repo
     );
     let resp = reqwest::Client::new()
@@ -40,10 +41,9 @@ fn handle_issues(issues_list: Vec<IssuesResponse>) {
     let mut text = String::new();
     text.push_str("# Summary\n\n");
     for issue in issues_list {
-        
-        text.push_str(
-            format!("- [{}]({}) - {}\n", issue.title, issue.html_url, issue.created_at).as_str(),
-        );
+        let time = NaiveDateTime::parse_from_str(&issue.created_at, "%Y-%m-%d %H:%M:%S")
+            .expect("issue created_at parse error");
+        text.push_str(format!("- [{}]({}) - {}\n", issue.title, issue.html_url, time).as_str());
     }
     update_readme(text);
 }
