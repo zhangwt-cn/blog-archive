@@ -43,7 +43,7 @@ fn handle_issues(issues_list: Vec<IssuesResponse>) {
     for issue in issues_list {
         let time = NaiveDateTime::parse_from_str(&issue.created_at, "%Y-%m-%d %H:%M:%S")
             .expect("issue created_at parse error");
-        text.push_str(format!("- [{}]({}) - {}\n", issue.title, issue.html_url, time).as_str());
+        text.push_str(format!("- [{}]({}) - {}\n", issue.title, issue.html_url, time.to_string()).as_str());
     }
     update_readme(text);
 }
