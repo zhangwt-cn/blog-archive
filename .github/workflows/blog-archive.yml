@@ -23,5 +23,11 @@ jobs:
         OWNER: ${{ secrets.OWNER }}
         REPO: ${{ secrets.REPO }}
       run: cargo run
+    - name: commit
+      run: |
+        git pull
+        git add .
+        git commit -m 'auto update blog'
+        git push
       
   
