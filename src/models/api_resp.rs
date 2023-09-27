@@ -3,26 +3,39 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize)]
 pub struct IssuesResponse {
+    #[serde(default)]
     pub url: String,
+    #[serde(default)]
     pub repository_url: String,
+    #[serde(default)]
     pub labels_url: String,
+    #[serde(default)]
     pub comments_url: String,
+    #[serde(default)]
     pub events_url: String,
+    #[serde(default)]
     pub html_url: String,
     pub id: i64,
+    #[serde(default)]
     pub node_id: String,
     pub number: i64,
+    #[serde(default)]
     pub title: String,
     pub user: User,
     pub labels: Vec<Label>,
+    #[serde(default)]
     pub state: String,
     pub locked: bool,
     pub comments: i64,
+    #[serde(default)]
     pub created_at: String,
+    #[serde(default)]
     pub updated_at: String,
     pub closed_at: Option<String>,
+    #[serde(default)]
     pub author_association: String,
     pub active_lock_reason: Option<String>,
+    #[serde(default)]
     pub body: String,
     pub performed_via_github_app: Option<String>,
 }
