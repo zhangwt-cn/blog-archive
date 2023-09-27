@@ -1,4 +1,3 @@
-//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
 
 use std::env;
 
