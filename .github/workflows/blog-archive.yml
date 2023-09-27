@@ -25,6 +25,7 @@ jobs:
       run: cargo run
     - name: update readme
       run: | 
+        cat README.md
         ls
         cd .. 
         ls
