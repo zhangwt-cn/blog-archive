@@ -1,7 +1,7 @@
 use crate::models::api_req::GithubApiReq;
 use crate::models::api_resp::IssuesResponse;
 use hyper::Client;
-use hyper::{Body, Error, Method, Request, StatusCode};
+use hyper::{Body, Error, Method, Request, StatusCode, Uri};
 use std::fs;
 
 // 请求github api
@@ -14,7 +14,7 @@ pub async fn req_api(req: GithubApiReq) -> Result<(), Error> {
 
     let request = Request::builder()
         .method(Method::GET)
-        .uri(url)
+        .uri(url.parse::<Uri>().unwrap())
         .header("User-Agent", "blog-archive")
         .header("Accept", "application/vnd.github+json")
         .header("X-GitHub-Api-Version", "2022-11-28")
