@@ -27,8 +27,5 @@ jobs:
       run: | 
         cat README.md
         ls
-        cd .. 
-        ls
-        cat README.md
       
   
