@@ -48,11 +48,12 @@ fn handle_issues(issues_list: Vec<IssuesResponse>) {
 
 // update readme.md
 fn update_readme(text: String) {
+    println!("{}", text);
     // text write to readme.md
     Command::new("echo")
         .arg(text)
         .arg(">>")
-        .arg("../README.md")
+        .arg("README.md")
         .output()
         .expect("echo failed");
 }
