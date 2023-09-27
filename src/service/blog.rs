@@ -14,7 +14,6 @@ pub async fn req_api(req: GithubApiReq) -> Result<(), Error> {
 
     let resp = reqwest::Client::new()
         .get(&url)
-        .query(&[("state", "all"), ("page", "1"), ("per_page", "100")])
         .header("User-Agent", "blog-archive")
         .header("Accept", "application/vnd.github+json")
         .header("X-GitHub-Api-Version", "2022-11-28")
