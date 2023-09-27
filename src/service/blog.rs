@@ -1,6 +1,5 @@
 use crate::models::api_req::GithubApiReq;
 use crate::models::api_resp::IssuesResponse;
-use chrono::NaiveDateTime;
 use reqwest::Error;
 use reqwest::StatusCode;
 use std::fs;
@@ -44,10 +43,7 @@ fn handle_issues(issues_list: Vec<IssuesResponse>) {
     let mut text = String::new();
     text.push_str("# Summary\n\n");
     for issue in issues_list {
-        let time = NaiveDateTime::parse_from_str(&issue.created_at, "%Y-%m-%d %H:%M:%S")
-            .expect("issue created_at parse error");
-        print!("{} - {}\n", issue.title, time.to_string());
-        text.push_str(format!("- [{}]({}) - {}\n", issue.title, issue.html_url, time.to_string()).as_str());
+        text.push_str(format!("- [{}]({}) - {}\n", issue.title, issue.html_url, issue.created_at).as_str());
     }
     update_readme(text);
 }
