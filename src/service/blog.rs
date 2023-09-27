@@ -1,8 +1,9 @@
 use crate::models::api_req::GithubApiReq;
 use crate::models::api_resp::IssuesResponse;
 use hyper::Client;
-use hyper::{Body, Error, Method, Request, StatusCode, Uri};
+use hyper::{Body, Error, Method, Request, StatusCode};
 use std::fs;
+use hyper_tls::HttpsConnector;
 
 // 请求github api
 #[tokio::main]
@@ -14,7 +15,7 @@ pub async fn req_api(req: GithubApiReq) -> Result<(), Error> {
 
     let request = Request::builder()
         .method(Method::GET)
-        .uri(url.parse::<Uri>().unwrap())
+        .uri(url)
         .header("User-Agent", "blog-archive")
         .header("Accept", "application/vnd.github+json")
         .header("X-GitHub-Api-Version", "2022-11-28")
@@ -22,7 +23,8 @@ pub async fn req_api(req: GithubApiReq) -> Result<(), Error> {
         .body(Body::empty())
         .unwrap();
 
-    let resp = Client::new().request(request).await?;
+    let client = Client::builder().build::<_, hyper::Body>(HttpsConnector::new());
+    let resp = client.request(request).await?;
     match resp.status() {
         StatusCode::OK => {
             let body_bytes = hyper::body::to_bytes(resp.into_body()).await?;
