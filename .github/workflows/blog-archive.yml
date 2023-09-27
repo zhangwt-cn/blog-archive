@@ -17,7 +17,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build
+    - name: run
+      env:
+        API_GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
+        OWNER: ${{ secrets.OWNER }}
+        REPO: ${{ secrets.REPO }}
       run: cargo run
     - name: update readme
       run: | 
