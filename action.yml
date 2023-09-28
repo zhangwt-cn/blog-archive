@@ -37,9 +37,9 @@ runs:
     - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
       shell: bash
     - name: Set up Rust
-        uses: actions-rs/toolchain@v1  # 设置 Rust 环境
-        with:
-          toolchain: stable 
+      uses: actions-rs/toolchain@v1  # 设置 Rust 环境
+      with:
+        toolchain: stable 
     - name: Run blog-archive
       run: |
         cd ${{ github.action_path }}
