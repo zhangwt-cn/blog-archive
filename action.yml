@@ -41,8 +41,8 @@ runs:
       shell: bash
       env:
         API_GITHUB_TOKEN:${{ inputs.api-github-token }}
-        REPO: ${{ inputs.repo }}
-        OWNER: ${{ inputs.owner }}
+        REPO:${{ inputs.repo }}
+        OWNER:${{ inputs.owner }}
     - shell: bash
       run: |
         pwd
