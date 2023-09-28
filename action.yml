@@ -44,6 +44,8 @@ runs:
       shell: bash
     - shell: bash
       run: |
+        pwd
+        ls
         git config user.name ${{ inputs.git-user-name }}
         git config user.email ${{ inputs.git-user-email }}
         git add README.md
