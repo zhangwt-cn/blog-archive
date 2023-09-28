@@ -32,7 +32,6 @@ inputs:
 
 runs:
   using: 'composite'
-  main: 'blog-archive'
   steps:
     - name: sync blog 
       shell: bash
