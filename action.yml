@@ -31,19 +31,12 @@ inputs:
     default: ''
 
 runs:
-  using: 'composite'
-  steps:
-    - name: sync blog 
-      shell: bash
-      run: |
-        ./blog-archive
-
-    - name: Update README.md
-      shell: bash
-      run: |
-        git config user.name ${{ inputs.git-user-name }}
-        git config user.email ${{ inputs.git-user-email }}
-        git add README.md
-        git commit -m "Update README.md with issues blog"
-        git push
-
+  using: 'shell'
+  run: |
+    ./blog-archive
+    git config user.name ${{ inputs.git-user-name }}
+    git config user.email ${{ inputs.git-user-email }}
+    git add README.md
+    git commit -m "Update README.md with issues blog"
+    git push
+        
