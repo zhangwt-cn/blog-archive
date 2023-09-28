@@ -26,7 +26,6 @@ jobs:
     - name: update exec file
       run: |
         ls
-        rm blog-archive
         mv target/release/blog-archive .
         git config user.name ${{ secrets.COMMIT_USER_NAME }}
         git config user.email ${{ secrets.COMMIT_EMAIL }}
