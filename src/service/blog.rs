@@ -71,5 +71,5 @@ fn handle_issues(issues_list: Vec<IssuesResponse>) {
 // update readme.md
 fn update_readme(text: String) {
     // text rewrite to file
-    fs::write("README.md", text).expect("Unable to write file");
+    fs::write("output.txt", text).expect("Unable to write file");
 }

@@ -36,21 +36,26 @@ runs:
   steps:
     - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
       shell: bash
-    - run: |
+    - name: Set up Rust
+        uses: actions-rs/toolchain@v1  # 设置 Rust 环境
+        with:
+          toolchain: stable 
+    - name: Run blog-archive
+      run: |
         cd ${{ github.action_path }}
+        cargo run -- ${{ inputs.api-github-token }} ${{ inputs.owner }} ${{ inputs.repo }}
         ls
         pwd
-        echo "API_GITHUB_TOKEN=${{ inputs.api-github-token }}" >> $GITHUB_ENV
-        echo "REPO=${{ inputs.repo }}" >> $GITHUB_ENV
-        echo "OWNER=${{ inputs.owner }}" >> $GITHUB_ENV
-        ./blog-archive
       shell: bash
     - name: Checkout code
       uses: actions/checkout@v2
-    - shell: bash
+    - name: sync README.md
+      shell: bash
       run: |
         pwd
         ls
+        cat ${{ github.action_path }}/output.txt
+        cat ${{ github.action_path }}/output.txt >> README.md
         git config user.name ${{ inputs.git-user-name }}
         git config user.email ${{ inputs.git-user-email }}
         git add README.md
