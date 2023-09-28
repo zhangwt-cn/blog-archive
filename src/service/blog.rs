@@ -8,10 +8,10 @@ use std::fs;
 
 // 请求github api
 #[tokio::main]
-pub async fn req_api(req: GithubApiReq) -> Result<(), Error> {
+pub async fn req_api(req: &mut GithubApiReq) -> Result<Vec<IssuesResponse>, Error> {
     let url = format!(
-        "https://api.github.com/repos/{}/{}/issues?state=all&page=1&per_page=100",
-        req.owner, req.repo
+        "https://api.github.com/repos/{}/{}/issues?state=all&page={}&per_page={}",
+        req.owner, req.repo, req.page, req.per_page
     );
 
     let request = Request::builder()
@@ -25,33 +25,36 @@ pub async fn req_api(req: GithubApiReq) -> Result<(), Error> {
         .unwrap();
 
     let client = Client::builder().build::<_, hyper::Body>(HttpsConnector::new());
-    let resp = client.request(request).await?;
-    match resp.status() {
-        StatusCode::OK => {
-            let body_bytes = hyper::body::to_bytes(resp.into_body()).await?;
-            let body_str = String::from_utf8_lossy(&body_bytes);
-            println!("Response body:\n{}", body_str);
-            let json = body_str.to_string().replace("null", "\"\"");
-            // 解析 JSON 响应
-            let issues_list: Vec<IssuesResponse> =
-                serde_json::from_str(&json).expect("JSON was not well-formatted");
-            handle_issues(issues_list)
+
+    match client.request(request).await {
+        Ok(resp) => {
+            match resp.status() {
+                StatusCode::OK => {
+                    let body_bytes = hyper::body::to_bytes(resp.into_body()).await?;
+                    let body_str = String::from_utf8_lossy(&body_bytes);
+                    let json = body_str.to_string().replace("null", "\"\"");
+                    // 解析 JSON 响应
+                    let issues_list: Vec<IssuesResponse> =
+                        serde_json::from_str(&json).expect("JSON was not well-formatted");
+                    return Ok(issues_list);
+                }
+                StatusCode::UNAUTHORIZED => {
+                    println!("error: {}", resp.status());
+                }
+                _ => {
+                    println!("error: {}", resp.status());
+                }
+            }
+            Ok(vec![])
         }
-        StatusCode::UNAUTHORIZED => {
-            println!("error: {}", resp.status());
-        }
-        _ => {
-            println!("error: {}", resp.status());
-        }
+        Err(e) => panic!("error: {}", e),
     }
-    Ok(())
 }
 
 // handle issues
-fn handle_issues(issues_list: Vec<IssuesResponse>) {
+fn handle_issues(issues_list: &Vec<IssuesResponse>) -> String {
     println!("issues count: {}", issues_list.len());
     let mut text = String::new();
-    text.push_str("# Summary\n\n");
     for issue in issues_list {
         // 将日期字符串解析为 DateTime<Utc> 类型
         let parsed_date_time = DateTime::parse_from_rfc3339(&issue.created_at).unwrap();
@@ -65,11 +68,30 @@ fn handle_issues(issues_list: Vec<IssuesResponse>) {
             .as_str(),
         );
     }
-    update_readme(text);
+    text
 }
 
 // update readme.md
 fn update_readme(text: String) {
     // text rewrite to file
     fs::write("output.txt", text).expect("Unable to write file");
+}
+
+// sync blog
+pub fn sync_blog(req: &mut GithubApiReq) {
+    let mut tag = true;
+    let mut text = String::new();
+    text.push_str("# Summary\n\n");
+    while tag {
+        let issues_list = req_api(req).expect("api request error");
+        if issues_list.len() == 0 {
+            break;
+        }
+        text.push_str(&handle_issues(&issues_list));
+        if issues_list.len() < 100 {
+            tag = false;
+        }
+        req.page += 1;
+    }
+    update_readme(text);
 }
