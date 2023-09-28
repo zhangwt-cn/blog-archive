@@ -32,19 +32,12 @@ inputs:
 
 runs:
   using: 'composite'
+  main: 'blog-archive'
   steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Rust
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-
-    - name: Build and Run Custom Rust Code
+    - name: sync blog 
       shell: bash
       run: |
-        cargo run
+        ./blog-archive
 
     - name: Update README.md
       shell: bash
