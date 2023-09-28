@@ -42,6 +42,7 @@ runs:
         toolchain: stable
 
     - name: Build and Run Custom Rust Code
+      shell: bash
       run: |
         cargo run
 
