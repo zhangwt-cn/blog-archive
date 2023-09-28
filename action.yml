@@ -40,9 +40,9 @@ runs:
         cd ${{ github.action_path }}
         ls
         pwd
-        echo "API_GITHUB_TOKEN:${{ inputs.api-github-token }}" >> $GITHUB_ENV
-        echo "REPO:${{ inputs.repo }}" >> $GITHUB_ENV
-        echo "OWNER:${{ inputs.owner }}" >> $GITHUB_ENV
+        echo "API_GITHUB_TOKEN=${{ inputs.api-github-token }}" >> $GITHUB_ENV
+        echo "REPO=${{ inputs.repo }}" >> $GITHUB_ENV
+        echo "OWNER=${{ inputs.owner }}" >> $GITHUB_ENV
         ./blog-archive
       shell: bash
     - name: Checkout code
