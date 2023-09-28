@@ -13,21 +13,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: run
-      env:
-        API_GITHUB_TOKEN: ${{ inputs.api-github-token }}
-        OWNER: ${{ inputs.owner }}
-        REPO: ${{ inputs.repo }}
-      run: cargo run
-    - name: commit
+    - name: Set up Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        
+    - name: Build Rust Project
       run: |
-        sudo git config user.email ${{ inputs.git-user-email }}
-        sudo git config user.name ${{ inputs.git-user-name }}
-        git config user.email
-        git config user.name
-        git pull
-        git add .
-        git commit -m 'auto update blog'
+        # 构建 Rust 项目
+        cargo build --release
+
+    - name: update exec file
+      run: |
+        ls
+        rm blog-archive
+        mv target/release/blog-archive .
+        git config user.name ${{ secrets.COMMIT_USER_NAME }}
+        git config user.email ${{ secrets.COMMIT_EMAIL }}
+        git add blog-archive
+        git commit -m 'update blog-archive bin'
         git push
       
   
