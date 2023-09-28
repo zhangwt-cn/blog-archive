@@ -31,6 +31,25 @@ inputs:
     default: ''
 
 runs:
-  using: 'rust'
-  main: 'main.rs'
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+
+    - name: Build and Run Custom Rust Code
+      run: |
+        cargo run
+
+    - name: Update README.md
+      run: |
+        git config user.name ${{ inputs.git-user-name }}
+        git config user.email ${{ git-user-email }}
+        git add README.md
+        git commit -m "Update README.md with issues blog"
+        git push
 
