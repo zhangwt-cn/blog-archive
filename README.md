@@ -1,3 +1,46 @@
+# bolog-archive
+将`iusses blog`生成 `README.md` Summary
+
+- action 配置方式
+```yml copy
+
+name: sync issues blog
+on:
+  workflow_dispatch:
+  issues:
+    types: [opened, deleted]
+  issue_comment:
+    types: [edited]
+
+jobs:
+  iusses-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: sync blog
+        uses: zhangwt-cn/blog-archive@main
+        with:
+          api-github-token: ${{ secrets.API_GITHUB_TOKEN }}
+          repo: ${{ secrets.REPO }}
+          owner: ${{ secrets.OWNER }}
+          git-user-name: username
+          git-user-email: user@gmail.com
+```
+
+- 参数配置说明
+  
+| inputs   | Desc         |
+| ------ | ---------------- |
+| api-github-token   | 用来访问 github issues 接口    |
+| repo    | issues仓库名称 |
+| git-user-name | commit README.md 用户      |
+| git-user-email | commit README.md 邮箱     |
+
+
+> 需要开启action提交README.md 权限设置， `setting > actions > general > Workflow permissions > Read and write permissions`
+
+
+---
+> 生成内容格式示例
 # Summary
 
 - [Cloudflare 设置 Origin Rules](https://github.com/zhangwt-cn/notes/issues/16) - 2023-09-19 12:06:49
