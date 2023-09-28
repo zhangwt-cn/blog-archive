@@ -34,7 +34,7 @@ runs:
   using: "composite"
 
   steps:
-    - run: blog-archive
+    - run: ./blog-archive
       shell: bash
     - shell: bash
       run: |
