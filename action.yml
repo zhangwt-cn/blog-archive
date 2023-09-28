@@ -55,7 +55,7 @@ runs:
         pwd
         ls
         cat ${{ github.action_path }}/output.txt
-        cat ${{ github.action_path }}/output.txt >> README.md
+        cat ${{ github.action_path }}/output.txt > README.md
         git config user.name ${{ inputs.git-user-name }}
         git config user.email ${{ inputs.git-user-email }}
         git add README.md
