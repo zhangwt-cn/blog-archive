@@ -34,9 +34,14 @@ pub async fn req_api(req: &mut GithubApiReq) -> Result<Vec<IssuesResponse>, Erro
                     let body_str = String::from_utf8_lossy(&body_bytes);
                     let json = body_str.to_string().replace("null", "\"\"");
                     // 解析 JSON 响应
-                    let issues_list: Vec<IssuesResponse> =
-                        serde_json::from_str(&json).expect("JSON was not well-formatted");
-                    return Ok(issues_list);
+                    match serde_json::from_str(&json) {
+                        Ok(issues_list) => {
+                            return Ok(issues_list);
+                        }
+                        Err(e) => {
+                            println!("error:{}, json: {}", e, json);
+                        }
+                    }
                 }
                 StatusCode::UNAUTHORIZED => {
                     println!("error: {}", resp.status());
