@@ -32,7 +32,10 @@ pub async fn req_api(req: &mut GithubApiReq) -> Result<Vec<IssuesResponse>, Erro
                 StatusCode::OK => {
                     let body_bytes = hyper::body::to_bytes(resp.into_body()).await?;
                     let body_str = String::from_utf8_lossy(&body_bytes);
-                    let json = body_str.to_string().replace("null", "\"\"");
+                    let json = body_str.to_string()
+                                        .replace("null", "\"\"")
+                                        .replace("{", "`{`")
+                                        .replace("}", "`}`");
                     // 解析 JSON 响应
                     match serde_json::from_str(&json) {
                         Ok(issues_list) => {

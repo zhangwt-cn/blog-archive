@@ -35,7 +35,7 @@ pub struct IssuesResponse {
     #[serde(default)]
     pub author_association: String,
     pub active_lock_reason: Option<String>,
-    /// pub body: String,
+    pub body: String,
     pub performed_via_github_app: Option<String>,
 }
 #[derive(Deserialize, Serialize)]
