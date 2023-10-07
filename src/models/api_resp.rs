@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 
 #[derive(Deserialize, Serialize)]
 pub struct IssuesResponse {
@@ -35,8 +34,8 @@ pub struct IssuesResponse {
     #[serde(default)]
     pub author_association: String,
     pub active_lock_reason: Option<String>,
-    #[serde(skip)]
-    pub body: Value,
+    #[serde(default)]
+    pub body: String,
     pub performed_via_github_app: Option<String>,
 }
 #[derive(Deserialize, Serialize)]
