@@ -35,6 +35,7 @@ pub struct IssuesResponse {
     #[serde(default)]
     pub author_association: String,
     pub active_lock_reason: Option<String>,
+    #[serde(skip)]
     pub body: String,
     pub performed_via_github_app: Option<String>,
 }
