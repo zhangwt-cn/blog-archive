@@ -2,7 +2,7 @@
 将`iusses blog`生成 `README.md` Summary
 
 - action 配置方式
-```yml copy
+```yml
 
 name: sync issues blog
 on:
