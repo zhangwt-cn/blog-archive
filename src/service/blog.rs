@@ -73,14 +73,20 @@ fn handle_issues(issues_list: &Vec<IssuesResponse>) -> String {
             )
             .as_str(),
         );
+
+        // 生成 md 文件
+        let mut file_name = issue.node_id.clone();
+        file_name.push_str(".md");
+        println!("file_name: {}", file_name);
+        update_file(file_name, &issue.body)
     }
     text
 }
 
-// update readme.md
-fn update_readme(text: String) {
+// update *.md
+fn update_file(path: String, text: &String) {
     // text rewrite to file
-    fs::write("output.txt", text).expect("Unable to write file");
+    fs::write(path, text).expect("Unable to write file");
 }
 
 // sync blog
@@ -99,5 +105,5 @@ pub fn sync_blog(req: &mut GithubApiReq) {
         }
         req.page += 1;
     }
-    update_readme(text);
+    update_file("output.txt".to_string(), &text);
 }
