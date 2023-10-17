@@ -73,6 +73,13 @@ fn handle_issues(issues_list: &Vec<IssuesResponse>) -> String {
             )
             .as_str(),
         );
+
+        // 生成 md 文件
+        let mut file_name = issue.title.clone();
+        file_name.push_str(".md");
+        let mut file_path = "blog/".to_string();
+        file_path.push_str(&file_name);
+        fs::write(file_path, issue.body.clone()).expect("Unable to write file");
     }
     text
 }
