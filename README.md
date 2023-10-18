@@ -24,6 +24,8 @@ jobs:
           owner: ${{ secrets.OWNER }}
           git-user-name: username
           git-user-email: user@gmail.com
+          backup-branch: issues-blog
+          backup-path: docs/blog
 ```
 
 - 参数配置说明
@@ -34,6 +36,8 @@ jobs:
 | repo    | issues仓库名称 |
 | git-user-name | commit README.md 用户      |
 | git-user-email | commit README.md 邮箱     |
+| backup-branch | 备份分支      |
+| backup-path | 备份分支路径     |
 
 
 > 需要开启action提交README.md 权限设置， `setting > actions > general > Workflow permissions > Read and write permissions`
