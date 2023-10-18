@@ -30,6 +30,16 @@ inputs:
     required: true
     default: ''
 
+  backup-branch:
+    description: 'backup branch name'
+    required: true
+    default: ''
+
+  backup-path:
+    description: 'backup path'
+    required: true
+    default: ''
+
 runs:
   using: "composite"
 
@@ -60,6 +70,17 @@ runs:
         git config user.email ${{ inputs.git-user-email }}
         git add README.md
         git commit -m "Update README.md with issues blog"
+        git push
+        ls
+        echo "==== Sync README.md ===="
+        echo "==== Sync issues blog ===="
+        git fetch
+        git branch -a
+        git checkout ${{ inputs.backup-branch }}
+        git status
+        mv ${{ github.action_path }}/I*.md ${{ inputs.backup-path }}
+        git add ${{ inputs.backup-path }}/*.md
+        git commit -m "Sync issues blog"
         git push
       
         
