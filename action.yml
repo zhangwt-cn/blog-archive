@@ -32,12 +32,12 @@ inputs:
 
   backup-branch:
     description: 'backup branch name'
-    required: true
+    required: false
     default: ''
 
   backup-path:
     description: 'backup path'
-    required: true
+    required: false
     default: ''
 
 runs:
@@ -72,8 +72,11 @@ runs:
         git commit -m "Update README.md with issues blog"
         git push
         ls
-        echo "==== Sync README.md ===="
-        echo "==== Sync issues blog ===="
+
+    - name: backup blog
+      if: ${{ inputs.backup-branch != '' && inputs.backup-path != '' }}
+      shell: bash
+      run: |
         git fetch
         git branch -a
         git checkout ${{ inputs.backup-branch }}
